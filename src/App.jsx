@@ -38,6 +38,48 @@ export default function App() {
   "INSPIRE"
 ];
 
+//cursor
+useEffect(() => {
+  const dots = document.querySelectorAll(".comet-dot");
+
+  let mouseX = 0;
+  let mouseY = 0;
+
+  let positions = Array.from(dots).map(() => ({ x: 0, y: 0 }));
+
+  const move = (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  };
+
+  document.addEventListener("mousemove", move);
+
+  const animate = () => {
+    if (!dots.length) return;
+
+    positions[0].x += (mouseX - positions[0].x) * 0.25;
+    positions[0].y += (mouseY - positions[0].y) * 0.25;
+
+    for (let i = 1; i < positions.length; i++) {
+      positions[i].x += (positions[i - 1].x - positions[i].x) * 0.35;
+      positions[i].y += (positions[i - 1].y - positions[i].y) * 0.35;
+    }
+
+    dots.forEach((dot, i) => {
+      dot.style.transform = `translate(${positions[i].x}px, ${positions[i].y}px)`;
+    });
+
+    requestAnimationFrame(animate);
+  };
+
+  animate();
+
+  return () => {
+    document.removeEventListener("mousemove", move);
+  };
+}, []);
+
+
 //Scramble
  const SCRAMBLE_WORDS = [
   "PERSEVERANCE",
@@ -51,6 +93,7 @@ export default function App() {
   "AMBITION",
   "DISCIPLINE"
   ];
+
 function WordScrambleGame() {
     const [wordIndex, setWordIndex] = useState(0);
     const [guess, setGuess] = useState("");
@@ -74,7 +117,10 @@ const handleSubmit = (e) => {
       }
     };
 
+
     return (
+    
+
       <div className="word-scramble-game">
         <p>Unscramble the letters: <strong>{scrambled}</strong></p>
 
@@ -462,8 +508,19 @@ function TypingSpeed() {
 
   // Toggle Theme
   return (
+    
+
    <div className={`app ${theme}`}>
-              {!selectedGame && (
+        <div className="comet">
+          <div className="comet-dot head"></div>
+          <div className="comet-dot"></div>
+          <div className="comet-dot"></div>
+          <div className="comet-dot"></div>
+          <div className="comet-dot"></div>
+          <div className="comet-dot"></div>
+        </div>
+
+       {!selectedGame && (
           <div className="theme-toggle" onClick={toggleTheme}>
             {theme === "dark" ? (
               <i className="fa-solid fa-sun"></i>
