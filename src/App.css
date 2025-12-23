@@ -188,14 +188,14 @@ body {
   padding: 80px 20px;
   margin-left: 20%;
   text-align: center;
-  position: relative;
   width: 120px;
   height: 200px;
   margin-bottom: 20px;
 }
 
 .pole {
-  position: absolute;
+  position: fixed;
+  margin-right: 20px;
   width: 4px;
   height: 180px;
   background: #333;
