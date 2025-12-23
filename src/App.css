@@ -184,18 +184,17 @@ body {
 
 
 .hangman {  
-  
   padding: 80px 20px;
-  margin-left: 20%;
+  margin-left: 5%;
   text-align: center;
+  position: relative;
   width: 120px;
   height: 200px;
   margin-bottom: 20px;
 }
 
 .pole {
-  position: fixed;
-  margin-right: 20px;
+  position: absolute;
   width: 4px;
   height: 180px;
   background: #333;
@@ -265,9 +264,10 @@ body {
 .keyboard {
   display: grid;
   margin: 0 auto;
+  
   grid-template-columns: repeat(13, 1fr);
   gap: 5px;
-  max-width: 600px;
+  max-width: 900px;
 }
 
 .keyboard button {
