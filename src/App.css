@@ -182,133 +182,99 @@ body {
   align-items: center;
 }
 
-
-.hangman {  
-  padding: 80px 20px;
-  margin-left: 5%;
+/* PROGRESS BAR */
+.progress-wrapper {
+  width: 240px;
+  margin: 16px auto;
   text-align: center;
-  position: relative;
-  width: 120px;
-  height: 200px;
-  margin-bottom: 20px;
 }
 
-.pole {
-  position: absolute;
-  width: 4px;
-  height: 180px;
-  background: #333;
+.progress-bar {
+  width: 100%;
+  height: 14px;
+  background: #ddd;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
-.head {
-  position: absolute;
-  top: 20px;
-  left: 36px;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 4px solid #333;
-  animation: pop 0.3s ease-out;
+.progress-fill {
+  height: 100%;
+  background: #e63946;
+  transition: width 0.3s ease;
 }
 
-.body {
-  position: absolute;
-  top: 60px;
-  left: 56px;
-  width: 4px;
-  height: 60px;
-  background: #333;
-  animation: drop 0.3s ease-out;
+.progress-text {
+  margin-top: 6px;
+  font-size: 14px;
+  font-weight: 500;
 }
 
-.arm {
-  position: absolute;
-  top: 70px;
-  width: 40px;
-  height: 4px;
-  background: #333;
-  animation: slide 0.3s ease-out;
-}
-
-.arm.left {
-  left: 16px;
-}
-
-.arm.right {
-  left: 56px;
-}
-
-.leg {
-  position: absolute;
-  top: 120px;
-  width: 40px;
-  height: 4px;
-  background: #333;
-  animation: slide 0.3s ease-out;
-}
-
-.leg.left {
-  left: 16px;
-}
-
-.leg.right {
-  left: 56px;
-}
-
+/* WORD UNDERLINES */
 .word {
-  font-size: 32px;
-  letter-spacing: 10px;
-  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+  gap: 6px; /* dikit */
+  margin: 18px 0;
 }
 
+.letter {
+  width: 22px;
+  text-align: center;
+  font-size: 26px;
+  font-weight: 600;
+  border-bottom: 2px solid currentColor;
+  padding-bottom: 2px;
+}
+
+/* KEYBOARD */
 .keyboard {
   display: grid;
-  margin: 0 auto;
-  
-  grid-template-columns: repeat(13, 1fr);
-  gap: 5px;
-  max-width: 900px;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 6px;
+  max-width: 420px;
+  margin: 18px auto 0;
 }
 
 .keyboard button {
-  padding: 8px;
+  padding: 10px 0;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 6px;
+  border: none;
   cursor: pointer;
+  background: #2a2a2a;
+  color: #fff;
+  transition: transform 0.1s ease, background 0.2s ease;
 }
 
+.keyboard button:hover:not(:disabled) {
+  background: #444;
+  transform: translateY(-1px);
+}
+
+.keyboard button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.keyboard button:disabled {
+  background: #999;
+  color: #555;
+  cursor: not-allowed;
+}
+
+/* WIN / LOSE TEXT */
 .win {
   color: green;
+  margin-top: 12px;
 }
 
 .lose {
-  color: red;
+  color: crimson;
+  margin-top: 12px;
 }
 
-@keyframes pop {
-  from {
-    transform: scale(0);
-  }
-  to {
-    transform: scale(1);
-  }
-}
 
-@keyframes drop {
-  from {
-    height: 0;
-  }
-  to {
-    height: 60px;
-  }
-}
 
-@keyframes slide {
-  from {
-    width: 0;
-  }
-  to {
-    width: 40px;
-  }
-}
 
 .whack-game {
   display: flex;

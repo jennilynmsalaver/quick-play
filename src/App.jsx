@@ -7,7 +7,7 @@ const games = [
   { id: "number", title: "Number Guessing", desc: "Guess the correct number" },
   { id: "whack", title: "Whack A Mole", desc: "Click fast, score higher" },
   { id: "speed", title: "Typing Speed", desc: "Test your typing Speed" },
-  { id: "word", title: "Hangman", desc: "Guess a secret word letter by letter" },
+  { id: "word", title: "Guess the Word", desc: "Guess a secret word letter by letter" },
 ];
 
 export default function App() {
@@ -421,8 +421,9 @@ function TypingSpeed() {
 
 
 
-  // HangmanGame
-  function HangmanGame() {const [wordIndex, setWordIndex] = useState(0);
+  // HangmanGame previous (new progress bar)
+  function HangmanGame() {
+  const [wordIndex, setWordIndex] = useState(0);
   const [guessed, setGuessed] = useState([]);
   const [wrong, setWrong] = useState(0);
 
@@ -432,52 +433,64 @@ function TypingSpeed() {
   const isWinner = word.split("").every((l) => guessed.includes(l));
   const isLoser = wrong >= maxWrong;
 
+  const livesLeft = maxWrong - wrong;
+  const progressPercent = (livesLeft / maxWrong) * 100;
+
   const guess = (letter) => {
     if (guessed.includes(letter) || isWinner || isLoser) return;
 
-    setGuessed([...guessed, letter]);
+    setGuessed((prev) => [...prev, letter]);
+
     if (!word.includes(letter)) {
-      setWrong(wrong + 1);
+      setWrong((prev) => prev + 1);
     }
   };
 
-  if (isWinner && !isLoser) {
-    setTimeout(() => {
-      setWordIndex((wordIndex + 1) % WORDS.length);
-      setGuessed([]);
-      setWrong(0);
-    }, 700);
-  }
+  useEffect(() => {
+    if (isWinner) {
+      const t = setTimeout(() => {
+        setWordIndex((prev) => (prev + 1) % WORDS.length);
+        setGuessed([]);
+        setWrong(0);
+      }, 1000);
+      return () => clearTimeout(t);
+    }
 
-  if (isLoser) {
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000);
-  }
+    if (isLoser) {
+      const t = setTimeout(() => {
+        setGuessed([]);
+        setWrong(0);
+      }, 1200);
+      return () => clearTimeout(t);
+    }
+  }, [isWinner, isLoser]);
 
   return (
     <div className="hangman-game">
-      <p>Lives: {maxWrong - wrong}</p>
-
-      <div className="hangman">
-        <div className="pole" />
-        {wrong > 0 && <div className="head" />}
-        {wrong > 1 && <div className="body" />}
-        {wrong > 2 && <div className="arm left" />}
-        {wrong > 3 && <div className="arm right" />}
-        {wrong > 4 && <div className="leg left" />}
-        {wrong > 5 && <div className="leg right" />}
+      {/* Progress Bar */}
+      <div className="progress-wrapper">
+        <div className="progress-bar">
+          <div
+            className="progress-fill"
+            style={{ width: `${progressPercent}%` }}
+          />
+        </div>
+        <p className="progress-text">
+          Lives: {livesLeft} / {maxWrong}
+        </p>
       </div>
 
+      {/* Word */}
       <div className="word">
         {word.split("").map((l, i) => (
-          <span key={i}>
+          <span key={i} className="letter">
             {guessed.includes(l) || isLoser ? l : "_"}
           </span>
         ))}
       </div>
 
-      {!isLoser && (
+      {/* Keyboard */}
+      {!isWinner && !isLoser && (
         <div className="keyboard">
           {"ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map((l) => (
             <button
@@ -492,17 +505,10 @@ function TypingSpeed() {
       )}
 
       {isWinner && <h2 className="win">Correct! Next word…</h2>}
-      {isLoser && <h2 className="lose">You lost. Returning home…</h2>}
-
-     
+      {isLoser && <h2 className="lose">Out of lives! Try again…</h2>}
     </div>
-
- 
   );
 }
-
-
-
 
 
 
